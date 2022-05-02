@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat/widgets/chat_message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +11,36 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final _textController = new TextEditingController();
   final _focusNode = new FocusNode();
+
+  List<ChatMessage> _messages = [
+    // ChatMessage(
+    //   uid: '124',
+    //   texto: 'Yo al recontrapedo tomando mate',
+    // ),
+    // ChatMessage(
+    //   uid: '123',
+    //   texto:
+    //       'Qué estás haciendo? Yo acá rascandome los huevos estudiando esta mierda de como carajo se hace un chat con Flutter',
+    // ),
+    // ChatMessage(
+    //   uid: '123',
+    //   texto: 'Como estas?',
+    // ),
+    // ChatMessage(
+    //   uid: '124',
+    //   texto: 'Hola Culiauuuu',
+    // ),
+    // ChatMessage(
+    //   uid: '123',
+    //   texto: 'Hola Puto!!',
+    // ),
+  ];
+
+  bool _estaEscribiendo = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +77,8 @@ class _ChatPageState extends State<ChatPage> {
             Flexible(
               child: ListView.builder(
                 physics: BouncingScrollPhysics(),
-                itemBuilder: (_, i) => Text('$i'),
+                itemCount: _messages.length,
+                itemBuilder: (_, i) => _messages[i],
                 reverse: true,
               ),
             ),
@@ -79,7 +108,13 @@ class _ChatPageState extends State<ChatPage> {
                 controller: _textController,
                 onSubmitted: _handleSubmit,
                 onChanged: (String texto) {
-                  //TODO cuando hay un valor, para poder postear
+                  setState(() {
+                    if (texto.trim().length > 0) {
+                      _estaEscribiendo = true;
+                    } else {
+                      _estaEscribiendo = false;
+                    }
+                  });
                 },
                 decoration:
                     InputDecoration.collapsed(hintText: 'Enviar mensaje'),
@@ -92,14 +127,26 @@ class _ChatPageState extends State<ChatPage> {
               child: Platform.isIOS
                   ? CupertinoButton(
                       child: Text('Enviar'),
-                      onPressed: () {},
-                    )
+                      onPressed: _estaEscribiendo
+                          ? () => _handleSubmit(_textController.text.trim())
+                          : null)
                   : Container(
                       margin: EdgeInsets.symmetric(horizontal: 4),
-                      child: IconButton(
-                          icon: Icon(Icons.send),
+                      child: IconTheme(
+                        data: IconThemeData(
                           color: Colors.blue[400],
-                          onPressed: () {}),
+                        ),
+                        child: IconButton(
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            icon: Icon(
+                              Icons.send,
+                            ),
+                            onPressed: _estaEscribiendo
+                                ? () =>
+                                    _handleSubmit(_textController.text.trim())
+                                : null),
+                      ),
                     ),
             ),
           ],
@@ -109,8 +156,23 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   _handleSubmit(String texto) {
+    if (texto.length == 0) return;
     print(texto);
     _textController.clear();
     _focusNode.requestFocus();
+
+    final newMessage = ChatMessage(
+      uid: '123',
+      texto: texto,
+      animationController: AnimationController(
+          vsync: this, duration: Duration(milliseconds: 200)),
+    );
+
+    _messages.insert(0, newMessage);
+    newMessage.animationController.forward();
+
+    setState(() {
+      _estaEscribiendo = false;
+    });
   }
 }
