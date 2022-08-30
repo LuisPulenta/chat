@@ -163,12 +163,22 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
         uid: '123',
         animationController: AnimationController(
           vsync: this,
-          duration: Duration(milliseconds: 400),
+          duration: const Duration(milliseconds: 400),
         ));
     _messages.insert(0, newMessage);
     newMessage.animationController.forward();
     setState(() {
       _estaEscribiendo = false;
     });
+  }
+
+//---------------------- dispose -------------------------
+  @override
+  void dispose() {
+    // TODO: Off del socket
+    for (ChatMessage message in _messages) {
+      message.animationController.dispose();
+    }
+    super.dispose();
   }
 }
