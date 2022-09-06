@@ -1,5 +1,8 @@
+import 'package:chat/helpers/mostrar_alerta.dart';
+import 'package:chat/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:chat/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -47,6 +50,7 @@ class __FormState extends State<_Form> {
   final nameCtrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Container(
       margin: const EdgeInsets.only(top: 40),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -70,10 +74,24 @@ class __FormState extends State<_Form> {
         ),
         BotonAzul(
             text: 'Registrar',
-            onPressed: () {
-              print(emailCtrl.text);
-              print(emailCtrl.text);
-            }),
+            onPressed: authService.autenticando
+                ? null
+                : () async {
+                    print(nameCtrl.text);
+                    print(emailCtrl.text);
+                    print(passCtrl.text);
+
+                    final registroOk = await authService.register(
+                        nameCtrl.text.trim(),
+                        emailCtrl.text.trim(),
+                        passCtrl.text.trim());
+                    if (registroOk == true) {
+                      //TODO Conectar a Socket Server
+                      Navigator.pushReplacementNamed(context, 'usuarios');
+                    } else {
+                      mostrarAlerta(context, 'Registro incorrecto', registroOk);
+                    }
+                  })
       ]),
     );
   }
