@@ -12,21 +12,34 @@ class UsuariosScreen extends StatefulWidget {
 }
 
 class _UsuariosScreenState extends State<UsuariosScreen> {
+//-------------------- Variables --------------------------
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  final usuarios = [
-    Usuario(uid: '1', nombre: 'María', email: 'maria@test.com', online: true),
-    Usuario(
-        uid: '2', nombre: 'Melissa', email: 'melissa@test.com', online: false),
-    Usuario(
-        uid: '3',
-        nombre: 'Fernando',
-        email: 'fernando@test.com',
-        online: false),
-    Usuario(uid: '4', nombre: 'Pablo', email: 'pablo@test.com', online: true),
-    Usuario(uid: '5', nombre: 'Lionel', email: 'lionel@test.com', online: true),
-  ];
+  final usuarioService = UsuariosService();
+  List<Usuario> usuarios = [];
+
+  // final usuarios = [
+  //   Usuario(uid: '1', nombre: 'María', email: 'maria@test.com', online: true),
+  //   Usuario(
+  //       uid: '2', nombre: 'Melissa', email: 'melissa@test.com', online: false),
+  //   Usuario(
+  //       uid: '3',
+  //       nombre: 'Fernando',
+  //       email: 'fernando@test.com',
+  //       online: false),
+  //   Usuario(uid: '4', nombre: 'Pablo', email: 'pablo@test.com', online: true),
+  //   Usuario(uid: '5', nombre: 'Lionel', email: 'lionel@test.com', online: true),
+  // ];
+
+//-------------------- initState --------------------------
+  @override
+  void initState() {
+    _cargarUsuarios();
+    super.initState();
+  }
+
+//-------------------- Pantalla --------------------------
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
@@ -73,7 +86,11 @@ class _UsuariosScreenState extends State<UsuariosScreen> {
 
 //---------------------- _cargarUsuarios ------------------------
   _cargarUsuarios() async {
-    await Future.delayed(const Duration(milliseconds: 1000));
+    // await Future.delayed(const Duration(milliseconds: 1000));
+
+    usuarios = await usuarioService.getUsuarios();
+    setState(() {});
+
     _refreshController.refreshCompleted();
   }
 
