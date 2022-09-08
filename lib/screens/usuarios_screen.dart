@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chat/services/services.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:chat/models/usuario.dart';
@@ -124,6 +125,11 @@ class _UsuariosScreenState extends State<UsuariosScreen> {
           color: usuario.online ? Colors.green : Colors.red,
         ),
       ),
+      onTap: () {
+        final chatService = Provider.of<ChatService>(context, listen: false);
+        chatService.usuarioPara = usuario;
+        Navigator.pushNamed(context, 'chat');
+      },
     );
   }
 }
