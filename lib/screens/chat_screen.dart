@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat/models/models.dart';
 import 'package:chat/services/services.dart';
 import 'package:chat/widgets/chat_message.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +58,8 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     authService = Provider.of<AuthService>(context, listen: false);
 
     socketService.socket.on('mensaje-personal', _escucharMensaje);
+
+    _cargarHistorial(chatService.usuarioPara.uid);
   }
 
   void _escucharMensaje(dynamic payload) {
@@ -191,7 +194,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     _focusNode.requestFocus();
     final newMessage = ChatMessage(
         texto: texto,
-        uid: '123',
+        uid: authService.usuario!.uid,
         animationController: AnimationController(
           vsync: this,
           duration: const Duration(milliseconds: 400),
@@ -216,6 +219,24 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     for (ChatMessage message in _messages) {
       message.animationController.dispose();
     }
+    socketService.socket.off('mensaje-personal');
     super.dispose();
+  }
+
+//---------------------- _cargarHistorial -------------------------
+  void _cargarHistorial(String usuarioId) async {
+    List<Mensaje> chat = await chatService.getChat(usuarioId);
+
+    final history = chat.map(
+      (m) => ChatMessage(
+          texto: m.mensaje,
+          uid: m.de,
+          animationController: AnimationController(
+              vsync: this, duration: Duration(milliseconds: 0))
+            ..forward()),
+    );
+    setState(() {
+      _messages.insertAll(0, history);
+    });
   }
 }
