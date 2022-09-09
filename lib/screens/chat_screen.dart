@@ -14,8 +14,13 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
+//---------------- Variables ------------------
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
+
+  late ChatService chatService;
+  late SocketService socketService;
+  late AuthService authService;
 
   List<ChatMessage> _messages = [
     // ChatMessage(
@@ -43,9 +48,32 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   bool _estaEscribiendo = false;
 
+//---------------- initState ------------------
+  @override
+  void initState() {
+    super.initState();
+    chatService = Provider.of<ChatService>(context, listen: false);
+    socketService = Provider.of<SocketService>(context, listen: false);
+    authService = Provider.of<AuthService>(context, listen: false);
+
+    socketService.socket.on('mensaje-personal', _escucharMensaje);
+  }
+
+  void _escucharMensaje(dynamic payload) {
+    ChatMessage message = ChatMessage(
+        texto: payload['mensaje'],
+        uid: payload['de'],
+        animationController: AnimationController(
+            vsync: this, duration: Duration(milliseconds: 300)));
+    setState(() {
+      _messages.insert(0, message);
+    });
+    message.animationController.forward();
+  }
+
+//---------------- Pantalla ------------------
   @override
   Widget build(BuildContext context) {
-    final chatService = Provider.of<ChatService>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -172,6 +200,12 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     newMessage.animationController.forward();
     setState(() {
       _estaEscribiendo = false;
+    });
+
+    socketService.emit('mensaje-personal', {
+      'de': authService.usuario!.uid,
+      'para': chatService.usuarioPara.uid,
+      'mensaje': texto
     });
   }
 

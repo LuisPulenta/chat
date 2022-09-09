@@ -1,7 +1,7 @@
-import 'package:chat/global/environment.dart';
-import 'package:chat/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:chat/global/environment.dart';
+import 'package:chat/services/services.dart';
 
 enum ServerStatus { Online, Offline, Connecting }
 
@@ -12,6 +12,7 @@ class SocketService with ChangeNotifier {
   ServerStatus get serverStatus => _serverStatus;
 
   IO.Socket get socket => _socket;
+  Function get emit => _socket.emit;
 
 //--------------- connect -------------------
   void connect() async {
