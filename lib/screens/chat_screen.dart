@@ -23,7 +23,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   late SocketService socketService;
   late AuthService authService;
 
-  List<ChatMessage> _messages = [
+  final List<ChatMessage> _messages = [
     // ChatMessage(
     //   uid: '124',
     //   texto: 'Yo al recontrapedo tomando mate',
@@ -67,7 +67,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
         texto: payload['mensaje'],
         uid: payload['de'],
         animationController: AnimationController(
-            vsync: this, duration: Duration(milliseconds: 300)));
+            vsync: this, duration: const Duration(milliseconds: 300)));
     setState(() {
       _messages.insert(0, message);
     });
@@ -103,27 +103,25 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
         centerTitle: true,
         elevation: 1,
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Flexible(
-              child: ListView.builder(
-                  reverse: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: _messages.length,
-                  itemBuilder: (_, i) => _messages[i]),
-            ),
-            const Divider(
-              height: 1,
-              color: Colors.black,
-            ),
-            Container(
-              color: Colors.white,
-              height: 60,
-              child: _inputChat(),
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          Flexible(
+            child: ListView.builder(
+                reverse: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: _messages.length,
+                itemBuilder: (_, i) => _messages[i]),
+          ),
+          const Divider(
+            height: 1,
+            color: Colors.black,
+          ),
+          Container(
+            color: Colors.white,
+            height: 60,
+            child: _inputChat(),
+          ),
+        ],
       ),
     );
   }
@@ -141,7 +139,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                 onSubmitted: _handleSubmit,
                 onChanged: (String texto) {
                   setState(() {
-                    if (texto.trim().length > 0) {
+                    if (texto.trim().isNotEmpty) {
                       _estaEscribiendo = true;
                     } else {
                       _estaEscribiendo = false;
@@ -215,7 +213,6 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 //---------------------- dispose -------------------------
   @override
   void dispose() {
-    // TODO: Off del socket
     for (ChatMessage message in _messages) {
       message.animationController.dispose();
     }
@@ -232,7 +229,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
           texto: m.mensaje,
           uid: m.de,
           animationController: AnimationController(
-              vsync: this, duration: Duration(milliseconds: 0))
+              vsync: this, duration: const Duration(milliseconds: 0))
             ..forward()),
     );
     setState(() {

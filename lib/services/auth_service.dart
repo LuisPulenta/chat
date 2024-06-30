@@ -11,7 +11,7 @@ class AuthService with ChangeNotifier {
   Usuario? usuario;
   bool _autenticando = false;
 
-  final _storage = new FlutterSecureStorage();
+  final _storage = const FlutterSecureStorage();
 
 //-------------- Getters y Setters -------------------
   bool get autenticando => _autenticando;
@@ -51,7 +51,7 @@ class AuthService with ChangeNotifier {
       await _guardarToken(loginResponse.token);
 
       return true;
-      print(resp.body);
+      // print(resp.body);
     } else {
       return false;
     }

@@ -23,7 +23,7 @@ class BotonAzul extends StatelessWidget {
       ),
       color: Colors.blue,
       shape: const StadiumBorder(),
-      onPressed: onPressed ?? null,
+      onPressed: onPressed,
     );
   }
 }

@@ -38,11 +38,11 @@ class ChatMessage extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
-        padding: EdgeInsets.all(8),
-        margin: EdgeInsets.only(bottom: 5, left: 50, right: 15),
-        child: Text(texto, style: TextStyle(color: Colors.white)),
+        padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.only(bottom: 5, left: 50, right: 15),
+        child: Text(texto, style: const TextStyle(color: Colors.white)),
         decoration: BoxDecoration(
-          color: Color(0xff4d9ef6),
+          color: const Color(0xff4d9ef6),
           borderRadius: BorderRadius.circular(20),
         ),
       ),
@@ -54,11 +54,11 @@ class ChatMessage extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        padding: EdgeInsets.all(8),
-        margin: EdgeInsets.only(bottom: 5, left: 15, right: 50),
-        child: Text(texto, style: TextStyle(color: Colors.black87)),
+        padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.only(bottom: 5, left: 15, right: 50),
+        child: Text(texto, style: const TextStyle(color: Colors.black87)),
         decoration: BoxDecoration(
-          color: Color(0xffe4e5e8),
+          color: const Color(0xffe4e5e8),
           borderRadius: BorderRadius.circular(20),
         ),
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:chat/services/services.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:chat/models/usuario.dart';
@@ -49,7 +48,7 @@ class _UsuariosScreenState extends State<UsuariosScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(usuario!.nombre.toString(),
-              style: TextStyle(color: Colors.black54)),
+              style: const TextStyle(color: Colors.black54)),
           backgroundColor: Colors.white,
           leading: IconButton(
             icon: const Icon(
@@ -66,7 +65,7 @@ class _UsuariosScreenState extends State<UsuariosScreen> {
           actions: [
             Container(
               margin: const EdgeInsets.only(right: 10),
-              child: socketService.serverStatus == ServerStatus.Online
+              child: socketService.serverStatus == ServerStatus.online
                   ? Icon(Icons.check_circle, color: Colors.blue[400])
                   : const Icon(Icons.offline_bolt, color: Colors.red),
             )

@@ -13,8 +13,8 @@ class RegisterScreen extends StatelessWidget {
         backgroundColor: const Color(0xfff2f2f2),
         body: SafeArea(
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Container(
+            physics: const BouncingScrollPhysics(),
+            child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.9,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,9 +78,9 @@ class __FormState extends State<_Form> {
             onPressed: authService.autenticando
                 ? null
                 : () async {
-                    print(nameCtrl.text);
-                    print(emailCtrl.text);
-                    print(passCtrl.text);
+                    // print(nameCtrl.text);
+                    // print(emailCtrl.text);
+                    // print(passCtrl.text);
 
                     final registroOk = await authService.register(
                         nameCtrl.text.trim(),
