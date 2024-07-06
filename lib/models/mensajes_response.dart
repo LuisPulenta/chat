@@ -32,6 +32,7 @@ class MensajesResponse {
       };
 }
 
+//----------------------------------------------------------------------
 class Mensaje {
   Mensaje({
     required this.de,

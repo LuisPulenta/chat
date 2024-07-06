@@ -62,6 +62,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     _cargarHistorial(chatService.usuarioPara.uid);
   }
 
+//---------------- _escucharMensaje ------------------
   void _escucharMensaje(dynamic payload) {
     ChatMessage message = ChatMessage(
         texto: payload['mensaje'],

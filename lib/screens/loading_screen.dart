@@ -31,16 +31,20 @@ class LoadingScreen extends StatelessWidget {
     if (autenticado) {
       socketService.connect();
       Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-              pageBuilder: (_, __, ___) => const UsuariosScreen(),
-              transitionDuration: const Duration(milliseconds: 0)));
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => const UsuariosScreen(),
+          transitionDuration: const Duration(milliseconds: 0),
+        ),
+      );
     } else {
       Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-              pageBuilder: (_, __, ___) => const LoginScreen(),
-              transitionDuration: const Duration(milliseconds: 0)));
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => const LoginScreen(),
+          transitionDuration: const Duration(milliseconds: 0),
+        ),
+      );
     }
   }
 }

@@ -19,23 +19,26 @@ class _UsuariosScreenState extends State<UsuariosScreen> {
   final usuarioService = UsuariosService();
   List<Usuario> usuarios = [];
 
-  // final usuarios = [
-  //   Usuario(uid: '1', nombre: 'María', email: 'maria@test.com', online: true),
-  //   Usuario(
-  //       uid: '2', nombre: 'Melissa', email: 'melissa@test.com', online: false),
-  //   Usuario(
-  //       uid: '3',
-  //       nombre: 'Fernando',
-  //       email: 'fernando@test.com',
-  //       online: false),
-  //   Usuario(uid: '4', nombre: 'Pablo', email: 'pablo@test.com', online: true),
-  //   Usuario(uid: '5', nombre: 'Lionel', email: 'lionel@test.com', online: true),
-  // ];
-
 //-------------------- initState --------------------------
   @override
   void initState() {
     _cargarUsuarios();
+    // usuarios = [
+    //   Usuario(uid: '1', nombre: 'María', email: 'maria@test.com', online: true),
+    //   Usuario(
+    //       uid: '2',
+    //       nombre: 'Melissa',
+    //       email: 'melissa@test.com',
+    //       online: false),
+    //   Usuario(
+    //       uid: '3',
+    //       nombre: 'Fernando',
+    //       email: 'fernando@test.com',
+    //       online: false),
+    //   Usuario(uid: '4', nombre: 'Pablo', email: 'pablo@test.com', online: true),
+    //   Usuario(
+    //       uid: '5', nombre: 'Lionel', email: 'lionel@test.com', online: true),
+    // ];
     super.initState();
   }
 
@@ -45,6 +48,7 @@ class _UsuariosScreenState extends State<UsuariosScreen> {
     final authService = Provider.of<AuthService>(context);
     final socketService = Provider.of<SocketService>(context);
     final usuario = authService.usuario;
+
     return Scaffold(
         appBar: AppBar(
           title: Text(usuario!.nombre.toString(),
@@ -89,9 +93,8 @@ class _UsuariosScreenState extends State<UsuariosScreen> {
     // await Future.delayed(const Duration(milliseconds: 1000));
 
     usuarios = await usuarioService.getUsuarios();
-    setState(() {});
-
     _refreshController.refreshCompleted();
+    setState(() {});
   }
 
 //---------------------- _listViewUsuarios ------------------------
@@ -117,8 +120,8 @@ class _UsuariosScreenState extends State<UsuariosScreen> {
         ),
       ),
       trailing: Container(
-        width: 10,
-        height: 10,
+        width: 20,
+        height: 20,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: usuario.online ? Colors.green : Colors.red,

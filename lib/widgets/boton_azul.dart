@@ -12,7 +12,7 @@ class BotonAzul extends StatelessWidget {
     return MaterialButton(
       child: SizedBox(
         width: double.infinity,
-        height: 60,
+        height: 40,
         child: Center(
           child: Text(text,
               style: const TextStyle(
